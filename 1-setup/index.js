@@ -9,7 +9,7 @@ let bot = new Twit({
   timeout_ms: 60*1000
 });
 
-bot.post('statuses/update', {status: 'Hello World!'}, function(err, data, response){
+bot.post('statuses/update', {status: 'Who\'s afraid of the big bad wolf?'}, function(err, data, response){
   if (err){
     console.log(err);
   } else {
