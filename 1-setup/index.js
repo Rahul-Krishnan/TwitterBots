@@ -59,10 +59,72 @@ let bot = new Twit({
 // });
 
 // Send a DM to a user:
-bot.post('direct_messages/new', {screen_name: 'theanswerismud', text: 'Hello Rahul! This is Robot Rahul!'}, function(err, data, response){
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(data);
-  }
-});
+// bot.post('direct_messages/new', {screen_name: 'theanswerismud', text: 'Hello Rahul! This is Robot Rahul!'}, function(err, data, response){
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(data);
+//   }
+// });
+
+// Get user timeline:
+function getBotTimeline(){
+  bot.get('statuses/home_timeline', {count: 5}, function(err, data, response) {
+    if (err) {
+      console.log(err);
+    } else {
+        data.forEach(function(d) {
+          console.log(d.text);
+          console.log(d.user.screen_name);
+          console.log(d.id_str);
+          console.log('\n');
+        });
+    }
+  });
+}
+
+// Retweet a post:
+// bot.post('statuses/retweet/:id', {id: '863823190358978560'}, function(err, data, response) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(data.text + ' was retweeted.');
+//   }
+// });
+
+// Favorite a post:
+// bot.post('favorites/create', {id: '863823190358978560'}, function(err, data, response) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log(data.text + ' was favorited.');
+//     }
+// });
+//
+
+// Unfavorite a post:
+// bot.post('favorites/destroy', {id: '863823190358978560'}, function(err, data, response) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log(data.text + ' was unfavorited.');
+//     }
+// });
+
+// Reply to a post:
+// bot.post('statuses/update', {status: '@theanswerismud well hello', in_reply_to_status_id: '863823190358978560'}, function(err, data, response) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(data);
+//   }
+// });
+
+// Delete a post:
+// bot.post('statuses/destroy/:id', {id: '872633361445113860'}, function(err, data, response) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(data);
+//   }
+// });
