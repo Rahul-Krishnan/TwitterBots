@@ -10,7 +10,7 @@ let bot = new Twit({
 });
 
 // Post a status update:
-// bot.post('statuses/update', {status: 'Who\'s afraid of the big bad wolf?'}, function(err, data, response){
+// bot.post('statuses/update', {status: 'Mambo No. 5!'}, function(err, data, response){
 //   if (err){
 //     console.log(err);
 //   } else {
@@ -76,12 +76,14 @@ let bot = new Twit({
 //         data.forEach(function(d) {
 //           console.log(d.text);
 //           console.log(d.user.screen_name);
+//           console.log(d.user.id);
 //           console.log(d.id_str);
 //           console.log('\n');
 //         });
 //     }
 //   });
 // }
+// getBotTimeline();
 
 // Retweet a post:
 // bot.post('statuses/retweet/:id', {id: '863823190358978560'}, function(err, data, response) {
@@ -140,4 +142,11 @@ let bot = new Twit({
 //       console.log('\n');
 //     });
 //   }
+// });
+
+// Comprehensive search:
+// let stream = bot.stream('statuses/filter', {follow: '2321215397'});
+//
+// stream.on('tweet', function(tweet){
+//   console.log(tweet.text+'\n');
 // });
