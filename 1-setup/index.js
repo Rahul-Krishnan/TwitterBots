@@ -1,5 +1,7 @@
 /* jshint esversion: 6 */
 let Twit = require('twit');
+let request = require('request');
+let fs = require('fs');
 
 let bot = new Twit({
   consumer_key: process.env.LEARNINGBOT_CONSUMER_KEY,
@@ -150,3 +152,65 @@ let bot = new Twit({
 // stream.on('tweet', function(tweet){
 //   console.log(tweet.text+'\n');
 // });
+
+// Download a photo using web api:
+// function getPhoto(){
+//   let parameters = {
+//     url: 'https://api.nasa.gov/planetary/apod',
+//     qs: {
+//       api_key: process.env.NASA_KEY
+//     },
+//     encoding: 'binary'
+//   };
+//   request.get(parameters, function(err, response, body) {
+//     body = JSON.parse(body);
+//     saveFile(body, 'nasa.jpg');
+//   });
+// }
+
+// Save to local directory:
+// function saveFile(body, fileName){
+//   let file = fs.createWriteStream(fileName);
+//   request(body).pipe(file).on('close', function(err){
+//     if (err){
+//       console.log(err);
+//     } else {
+//       console.log('Media saved.');
+//       console.log(body);
+//       let descriptionText = body.title;
+//       uploadMedia(descriptionText, fileName);
+//     }
+//   });
+// }
+
+// Upload to Twitter:
+// function uploadMedia(descriptionText, fileName){
+//   let filePath = __dirname + '/' + fileName;
+//   bot.postMediaChunked({file_path: filePath}, function(err, data, response){
+//     if (err){
+//       console.log(err);
+//     } else {
+//       console.log(data);
+//       let params = {
+//         status: descriptionText,
+//         media_ids: data.media_id_string
+//       };
+//       postStatus(params);
+//     }
+//   });
+// }
+//
+// function postStatus(params){
+//   bot.post('statuses/update', params, function(err, data, response){
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log('Status posted.');
+//     }
+//   });
+// }
+
+// getPhoto();
+
+// Upload Videos:
+// uploadMedia('Video from NASA', 'nasa_video.mp4');
