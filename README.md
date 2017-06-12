@@ -8,8 +8,12 @@ A bunch of tweet bots, made following the egghead.io tutorial
 
 ### Features
 
--
-
+- Bot 1:
+- Bot 8:
+- Bot 9:
+- Bot 10:
+- Bot 11:
+- Bot 12:
 
 ## Deployment
 
