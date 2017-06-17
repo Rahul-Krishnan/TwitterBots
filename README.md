@@ -8,12 +8,14 @@ A bunch of tweet bots, made following the egghead.io tutorial
 
 ### Features
 
-- Bot 1:
-- Bot 8:
-- Bot 9:
-- Bot 10:
-- Bot 11:
-- Bot 12:
+- Bot 1: Basic functionality, i.e. add/remove friends/posts
+- Bot 8: Mimic Bot that uses Rita and sample text
+- Bot 9: Human Emotions Bot using Google Cloud Vision API
+- Bot 10: Story Generation Bot using Tracery
+- Bot 11: Retrieve & tweet info from Google Spreadsheets
+- Bot 12: Twitter Audio Bot that composes songs
+- Bot 13: Hosted on Heroku
+- Bot 14: Hosted on Heroku & Docker
 
 ## Deployment
 

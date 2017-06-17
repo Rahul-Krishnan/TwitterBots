@@ -1,3 +1,8 @@
 01-setup/node_modules
 08-ritabot/node_modules
 09-human-emotions-bot/node_modules
+10-story-generation-bot/node_modules
+11-google-spreadsheets-bot/node_modules
+12-audio-bot/node_modules
+13-heroku-bot/node_modules
+14-docker-bot/node_modules
