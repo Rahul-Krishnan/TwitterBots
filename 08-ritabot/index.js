@@ -40,7 +40,7 @@ let tweetData = fs.readFile(filePath, 'utf8', function(err, data) {
     console.log(err);
   } else {
     inputText = data;
-    let markov = new rita.RiMarkov(3);
+    let markov = new rita.RiMarkov(2);
     markov.loadText(inputText);
     let sentence = markov.generateSentences(1);
     bot.post('statuses/update', {status: sentence}, function(err, data, response) {
