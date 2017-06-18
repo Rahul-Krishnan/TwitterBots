@@ -1,6 +1,7 @@
 01-setup/node_modules
 08-ritabot/node_modules
 09-human-emotions-bot/node_modules
+09-human-emotions-bot/keyfile.json
 10-story-generation-bot/node_modules
 11-google-spreadsheets-bot/node_modules
 12-audio-bot/node_modules
