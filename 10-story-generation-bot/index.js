@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 let Twit = require('twit');
-
+let tracery = require('tracery-grammar');
 
 let bot = new Twit({
   consumer_key: process.env.LEARNINGBOT_CONSUMER_KEY,
@@ -8,4 +8,35 @@ let bot = new Twit({
   access_token: process.env.LEARNINGBOT_ACCESS_TOKEN,
   access_token_secret: process.env.LEARNINGBOT_ACCESS_TOKEN_SECRET,
   timeout_ms: 60*1000
+});
+
+let grammar = tracery.createGrammar({
+  'character': ['Karl', 'Aida', 'Hans'],
+  'place': ['office', 'bank', 'court'],
+  'object': ['letter', 'paper', 'bribe'],
+  'setPronouns': [
+    '[they:they][them:them][their:their][theirs:theirs]',
+    '[they:she][them:her][their:her][theirs:hers]',
+    '[they:he][them:him][their:his][theirs:his]'
+  ],
+  'setJob': [
+    '[job:lawyer][actions:argued in court,filed some paperwork]',
+    '[job:inspector][actions:talked with the lawyer,conducted meetings]',
+    '[job:officer][actions:arrested people,stood in the courtroom]'
+  ],
+  'story': ['#protagonist# the #job# went to the #place# every day. Usually #they# #actions#. Then #they# picked up #their# #object#.'],
+  'origin': ['#[#setPronouns#][#setJob#][protagonist:#character#]story#']
+});
+
+grammar.addModifiers(tracery.baseEngModifiers);
+
+let story = grammar.flatten('#origin#');
+console.log(story);
+
+bot.post('statuses/update', {status: story}, function(err, data, response){
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Bot has tweeted '+story);
+  }
 });
