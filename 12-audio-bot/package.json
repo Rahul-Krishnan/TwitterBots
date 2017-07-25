@@ -9,7 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.12",
+    "child_process": "^1.0.2",
     "csv-parse": "^1.2.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "0.0.1-security",
+    "jsmidgen": "^0.1.5",
+    "path": "^0.12.7",
     "rita": "^1.2.12",
     "twit": "^2.2.5"
   }

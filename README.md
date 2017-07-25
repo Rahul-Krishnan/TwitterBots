@@ -21,7 +21,7 @@ A bunch of tweet bots, made following the egghead.io tutorial
 
 
 ## Built With
-
+- Twit.js
 
 ## Authors
 
