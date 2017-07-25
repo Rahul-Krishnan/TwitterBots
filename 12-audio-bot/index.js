@@ -7,7 +7,7 @@ let path = require('path');
 let child_process = require('child_process');
 let ffmpegPath = require('@ffmpeg-installer/ffmpeg');
 let ffmpeg = require('fluent-ffmpeg');
-ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 let bot = new Twit({
   consumer_key: process.env.LEARNINGBOT_CONSUMER_KEY,
@@ -48,7 +48,7 @@ function getPartsOfSpeech(text){
 
 function compose(taggedTweet, track){
   let notes = taggedTweet.map(function(tag){
-    if (tag.includes('nn') || tag.includes('i'){
+    if (tag.includes('nn') || tag.includes('i')){
       return 'e4';
     }
     if (tag.includes('vb')){
@@ -62,14 +62,44 @@ function compose(taggedTweet, track){
   return track;
 }
 
-
-
 function createMidi(tweet, midiFn, cb){
   let file = new midi.File();
   let track = new midi.Track();
   file.addTrack(track);
   let cleanedText = rita.RiTa
-  .tokenize(cleanText(tweet.text));
+  .tokenize(cleanText(tweet.text))
+  .filter(isNotPunctuation)
+  .join(' ');
+  let taggedTweet = getPartsOfSpeech(cleanedText);
+  compose(taggedTweet, track);
+  fs.writeFile(midiFn, file.toBytes(), {encoding: 'binary'}, cb);
+}
+
+function convertMidiToWav(midiFn, wavFn, cb){
+  let command = 'timidity --output-24bit -A120 ' + midiFn + ' -Ow -o ' + wavFn;
+  child_process.exec(command, {}, function(err, stdout, stderr){
+    if (err) {
+      cb(err);
+    } else {
+      cb(null);
+    }
+  });
+}
+
+function createVideo(imgFn, wavFn, vidFn, cb){
+  ffmpeg()
+  .on('end', function(){
+    cb(null);
+  })
+  .on('error', function(err, stdout, stderr){
+    cb(err);
+  })
+  .input(imgFn)
+  .inputFPS(1/6)
+  .input(wavFn)
+  .output(vidFn)
+  .outputFPS(30)
+  .run();
 }
 
 function createMedia(tweet, imgFn, midiFn, wavFn, vidFn, cb){
@@ -77,7 +107,51 @@ function createMedia(tweet, imgFn, midiFn, wavFn, vidFn, cb){
     if (err) {
       console.log(err);
     } else {
-      // convert midi
+      convertMidiToWav(midiFn, wavFn, function(err){
+        if (err){
+          console.log(err);
+        } else {
+          console.log('Midi converted!');
+          createVideo(imgFn, wavFn, vidFn, cb);
+        }
+      });
+    }
+  });
+}
+
+function deleteWav(wavFn, cb){
+  let command = 'rm ' + wavFn;
+  child_process.exec(command, {}, function(err, stdout, stderr){
+    if(err){
+      cb(err);
+    } else {
+      cb(null);
+    }
+  });
+}
+
+function postStatus(params){
+  bot.post('statuses/update', params, function(err, data, response){
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Bot has posted!');
+    }
+  });
+}
+
+function uploadMedia(tweet, vidFn){
+  bot.postMediaChunked({file_path: vidFn}, function(err, data, response){
+    if (err) {
+      console.log(err);
+    } else {
+      let stat = tweet.text.split(bot_username)
+        .join(' ')
+        .trim();
+      let params = {
+        status: '@' + tweet.user.screen_name + ' ' + stat, in_reply_to_status_id: tweet.id_str, media_ids: data.media_id_string
+      };
+      postStatus(params);
     }
   });
 }
@@ -103,6 +177,13 @@ stream.on('tweet', function(tweet){
         console.log(err);
       } else {
         console.log('Media created!');
+        deleteWav(wavFn, function(err){
+          if (err) {
+            console.log(err);
+          } else {
+            uploadMedia(tweet, vidFn);
+          }
+        });
       }
     });
   }
