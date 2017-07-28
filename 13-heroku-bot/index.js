@@ -22,4 +22,4 @@ function littleTweet(){
 
 setInterval(function(){
   littleTweet();
-}, 60*60*1000);
+}, 24*60*60*1000);
